@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 
-{%load static%}
-{%block content%}
+{%load staticfiles%}
+
 <html>
     <head>
+        <script type="text/javascript" src="{% static 'jquery/dist/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'semantic-ui/dist/semantic.js' %}"></script>
+        <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
+
+
+
+
         <div class="ui vertical menu">
           <div class="item">
             <div class="ui input"><input type="text" placeholder="Search..."></div>
@@ -34,16 +41,7 @@
         </div>
     </head>
     <body>
-        <div class="ui grid">
-            <div class="four wide column"> Dasdsad</div>
-            <div class="four wide column"> SADASDSAD</div>
-            <div class="four wide column"> SDASDASD</div>
-            <div class="four wide column"></div>
-            <div class="four wide column"></div>
-            <div class="four wide column"></div>
-            <div class="four wide column"></div>
-            <div class="four wide column"></div>
-        </div>
+        {%block content%}
+        {%endblock%}
   </body>
 </html>
-{%endblock%}
