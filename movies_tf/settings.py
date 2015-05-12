@@ -56,7 +56,7 @@ ROOT_URLCONF = 'movies_tf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -88,9 +88,6 @@ STATICFILES_FINDERS = (
     'djangobower.finders.BowerFinder',
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
 
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 # Internationalization
