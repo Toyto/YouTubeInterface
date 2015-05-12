@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djangobower',
+    'mainpage',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -89,7 +90,12 @@ STATICFILES_FINDERS = (
 )
 
 
-BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'bower_components')
+
+BOWER_INSTALLED_APPS = (
+    'jquery',
+    'semantic-ui',
+)
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

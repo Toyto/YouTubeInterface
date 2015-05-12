@@ -16,4 +16,5 @@ static
 .idea/*
 uploads/*
 *.log
-
+components
+bower_components
