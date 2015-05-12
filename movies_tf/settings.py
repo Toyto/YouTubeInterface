@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangobower',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -81,7 +82,17 @@ DATABASES = {
     }
 }
 
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    'djangobower.finders.BowerFinder',
+)
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
+
+BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
