@@ -1,7 +1,6 @@
 from django.shortcuts import render
 
-
-def menu(request):
+def index(request):
     context = {}
     template = 'index.html'
     return render(request, template, context)

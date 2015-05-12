@@ -18,5 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'mainpage.views.menu', name='menu'),
+    url(r'^$', 'core.views.index', name='index'),
 ]

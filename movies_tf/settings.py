@@ -38,7 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djangobower',
-    'mainpage',
+    'core',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,7 +57,7 @@ ROOT_URLCONF = 'movies_tf.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'apps/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,8 +93,8 @@ STATICFILES_FINDERS = (
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 
 BOWER_INSTALLED_APPS = (
-    'jquery',
-    'semantic-ui',
+    'jquery#2.1.4',
+    'semantic-ui#1.12.2',
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
