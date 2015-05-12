@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+{% load staticfiles %}
+
+<html>
+    <head>
+        <script type="text/javascript" src="{% static 'jquery/dist/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'semantic-ui/dist/semantic.js' %}"></script>
+        <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
+
+
+
+
+        <div class="ui inverted menu">
+          <a class="active item">
+            <i class="home icon"></i> Home
+          </a>
+          <a class="item">
+            <i class="mail icon"></i> Messages
+          </a>
+          <a class="item">
+            <i class="user icon"></i> Friends
+          </a>
+        </div>
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+  </body>
+</html>
