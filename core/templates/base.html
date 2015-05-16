@@ -13,14 +13,19 @@
           <a class="active item">
             <i class="home icon"></i> Home
           </a>
+          {% if request.user.is_anonymous %}
           <a class="item" method="post" href="{% url 'social:begin' backend='google-oauth2' %}">
             <i class="user icon"></i> Login
           </a>
+          {% endif %}
         </div>
 
 
     </head>
     <body>
+        {% if user.is_authenticated %}
+          You are authenticated as {{ request.user.get_full_name }}
+        {% endif %}
         {% block content %}
         {% endblock %}
   </body>
