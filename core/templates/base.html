@@ -9,19 +9,16 @@
         <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
 
 
-
-
         <div class="ui inverted menu">
           <a class="active item">
             <i class="home icon"></i> Home
           </a>
-          <a class="item">
-            <i class="mail icon"></i> Messages
-          </a>
-          <a class="item">
-            <i class="user icon"></i> Friends
+          <a class="item" method="post" href="{% url 'social:begin' backend='google-oauth2' %}">
+            <i class="user icon"></i> Login
           </a>
         </div>
+
+
     </head>
     <body>
         {% block content %}
