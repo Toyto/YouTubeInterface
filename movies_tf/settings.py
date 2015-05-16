@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangobower',
     'core',
+    'social.apps.django_app.default',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,14 +66,22 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
         },
     },
 ]
+LOGIN_REDIRECT_URL = '/'
+
+SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'email']
 
 WSGI_APPLICATION = 'movies_tf.wsgi.application'
 
-
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
@@ -103,6 +112,22 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 
 )
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '117566578511-lu8n2f1o87kleo5fj6q3f4vjdpibqhn5.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'i5PJ-tfR6Z_93V7EP-2oItB4'
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_UNIQUE_USER_ID = True
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile'
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
+
+SOCIAL_AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'core.User'
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 

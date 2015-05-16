@@ -9,21 +9,23 @@
         <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
 
 
-
-
         <div class="ui inverted menu">
           <a class="active item">
             <i class="home icon"></i> Home
           </a>
-          <a class="item">
-            <i class="mail icon"></i> Messages
+          {% if request.user.is_anonymous %}
+          <a class="item" method="post" href="{% url 'social:begin' backend='google-oauth2' %}">
+            <i class="user icon"></i> Login
           </a>
-          <a class="item">
-            <i class="user icon"></i> Friends
-          </a>
+          {% endif %}
         </div>
+
+
     </head>
     <body>
+        {% if user.is_authenticated %}
+          You are authenticated as {{ request.user.get_full_name }}
+        {% endif %}
         {% block content %}
         {% endblock %}
   </body>
