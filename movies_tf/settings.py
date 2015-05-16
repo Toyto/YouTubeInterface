@@ -81,7 +81,6 @@ WSGI_APPLICATION = 'movies_tf.wsgi.application'
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
-    'social.backends.google.GooglePlusAuth',
 )
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
@@ -117,22 +116,14 @@ STATICFILES_DIRS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '117566578511-lu8n2f1o87kleo5fj6q3f4vjdpibqhn5.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'i5PJ-tfR6Z_93V7EP-2oItB4'
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_UNIQUE_USER_ID = True
-SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
-      'access_type': 'offline'
-}
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_IGNORE_DEFAULT_SCOPE = True
 SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'https://www.googleapis.com/auth/userinfo.email',
     'https://www.googleapis.com/auth/userinfo.profile'
 ]
-SOCIAL_AUTH_GOOGLE_PLUS_IGNORE_DEFAULT_SCOPE = True
-SOCIAL_AUTH_GOOGLE_PLUS_SCOPE = [
-    'https://www.googleapis.com/auth/plus.login',
-    'https://www.googleapis.com/auth/userinfo.email',
-    'https://www.googleapis.com/auth/userinfo.profile'
-]
+
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
-SOCIAL_AUTH_GOOGLE_PLUS_USE_DEPRECATED_API = True
 
 SOCIAL_AUTH_USER_MODEL = 'core.User'
 AUTH_USER_MODEL = 'core.User'
