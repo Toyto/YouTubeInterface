@@ -37,9 +37,9 @@ class MyUserManager(BaseUserManager):
         return user
 
 
-class MyUser(AbstractBaseUser):
+class User(AbstractBaseUser):
 
-    """Custom MyUser"""
+    """Custom User"""
     username = models.CharField(max_length=30, blank=False, unique=True)
     email = models.EmailField(max_length=30, blank=False)
     is_active = models.BooleanField(default=True)

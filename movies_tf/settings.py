@@ -134,8 +134,8 @@ SOCIAL_AUTH_GOOGLE_PLUS_SCOPE = [
 SOCIAL_AUTH_GOOGLE_OAUTH2_USE_DEPRECATED_API = True
 SOCIAL_AUTH_GOOGLE_PLUS_USE_DEPRECATED_API = True
 
-SOCIAL_AUTH_USER_MODEL = 'core.MyUser'
-AUTH_USER_MODEL = 'core.MyUser'
+SOCIAL_AUTH_USER_MODEL = 'core.User'
+AUTH_USER_MODEL = 'core.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
