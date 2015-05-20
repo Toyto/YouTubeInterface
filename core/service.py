@@ -47,34 +47,60 @@ part=contentDetails%2C+snippet&id=\
     return data_channel
 
 
-def user_object(google_plus_id):
-    user_obj = UserSocialAuth.objects.filter(uid=google_plus_id)
-    return user_obj
+def get_user_for_video_author(google_uid):
+    try:
+        social_user_for_video = UserSocialAuth.objects.get(uid=google_uid)
+        existance = True
+    except UserSocialAuth.DoesNotExist:
+        social_user_for_video = None
+        existance = False
+    if existance:
+        user_object_for_video = social_user_for_video.user
+    else:
+        user_object_for_video = None
+    return user_object_for_video
 
 
-def get_video_info(url):
-    regexp = r'http(s)?://(www\.)?youtube\.com/watch\?v=(?P<video_id>.+)'
+def get_author_of_video(channel_id):
+    channel_info = get_channel_info(channel_id)
+    channel_items = channel_info['items'][0]
+    google_plus_id = channel_items['contentDetails']['googlePlusUserId']
+    into_channel_items_thumbnail = channel_items['snippet']['thumbnails']
+    video_author = Author.objects.get_or_create(google_uid=google_plus_id,
+                                                defaults={'user': get_user_for_video_author(google_plus_id),
+                                                          'name': channel_items['snippet']['title'],
+                                                          'avatar_url': into_channel_items_thumbnail['medium']['url']})
+    return video_author
+
+
+def get_video_id(url):
+    regexp = (
+        r'http(s)?://(www\.)?youtu(.)?be(/)?(.com/watch\?v=)?(?P<video_id>.+)'
+    )
     match = re.match(regexp, url)
     video_id = match.group('video_id')
+    return video_id
+
+
+def get_video_json(video_id):
     video_url = 'https://www.googleapis.com/youtube/v3/videos?\
 part=snippet&id={video_id}&key={GOOGLE_API_KEY}'
     json_url = video_url.format(
         video_id=str(video_id),
         GOOGLE_API_KEY=str(settings.GOOGLE_API_KEY)
     )
-    print(json_url)
     r = requests.get(json_url)
-    # Convert it to a Python dictionary
     data = json.loads(r.text)
-    # Loop through the result.
+    return data
+
+
+def get_video_info(url):
+    video_id = get_video_id(url)
+    data = get_video_json(video_id)
     into_items = data['items'][0]
     channel_id = into_items['snippet']['channelId']
-    channel_info = get_channel_info(channel_id)
     into_snippet_thumbnail = into_items['snippet']['thumbnails']
     into_items_snippet = into_items['snippet']
-    channel_items = channel_info['items'][0]
-    google_plus_id = channel_items['contentDetails']['googlePlusUserId']
-    into_channel_items_thumbnail = channel_items['snippet']['thumbnails']
 
     return VideoInfo(
         title=into_items_snippet['title'],
@@ -85,10 +111,7 @@ part=snippet&id={video_id}&key={GOOGLE_API_KEY}'
         high_thumbnail=into_snippet_thumbnail['high']['url'],
         standard_thumbnail=into_snippet_thumbnail['standard']['url'],
         max_thumbnail=into_snippet_thumbnail['maxres']['url'],
-        author=Author.objects.get_or_create(
-            name=into_items_snippet['channelTitle'],
-            avatar_url=into_channel_items_thumbnail
-            ['medium']['url'],
-            defaults={'user': user_object(google_plus_id)}
-        )
+        author=get_author_of_video(channel_id)
     )
+
+get_video_info('https://youtu.be/yYfYVB1e988')

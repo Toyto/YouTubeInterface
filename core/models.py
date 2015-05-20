@@ -79,6 +79,7 @@ class User(AbstractBaseUser):
 
 
 class Author(models.Model):
-    name = models.CharField(max_length=30, default='None')
+    google_uid = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30)
     avatar_url = models.URLField(max_length=200)
     user = models.OneToOneField(User, null=True)

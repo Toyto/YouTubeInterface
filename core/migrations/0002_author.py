@@ -15,10 +15,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Author',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=30, default='None')),
+                ('id', models.AutoField(serialize=False, auto_created=True, primary_key=True, verbose_name='ID')),
+                ('google_uid', models.CharField(max_length=30, unique=True)),
+                ('name', models.CharField(max_length=30)),
                 ('avatar_url', models.URLField()),
-                ('user', models.OneToOneField(null=True, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, null=True)),
             ],
         ),
     ]
