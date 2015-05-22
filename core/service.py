@@ -10,20 +10,17 @@ _API_URL = 'https://www.googleapis.com/youtube/v3'
 
 
 class ChannelInfo:
-
     """
     Youtube channel info.
 
     @param str title: channel title
-    @param str video_id: channel id
+    @param str channel_id: channel id
     @param str description: channel description
-    @param str small_thumbnail: small channel thumbnail
     @param str medium_thumbnail: medium channel thumbnail
     @param str high_thumbnail: high channel thumbnail
-    @param str standard_thumbnail: standard channel thumbnail
-    @param str max_thumbnail: max channel thumbnail
+    @param str | None standard_thumbnail: standard channel thumbnail
+    @param str | None max_thumbnail: max channel thumbnail
     @param str google_plus_id: channel owner`s google id
-
 
     """
     __slots__ = [
@@ -36,9 +33,15 @@ class ChannelInfo:
         for key in kwargs:
             setattr(self, key, kwargs[key])
 
+    def __str__(self):
+        return '<{0} {1}>'.format(
+            type(self).__name__,
+            {k: getattr(self, k) for k in self.__slots__}
+
+        )
+
 
 class VideoInfo:
-
     """
     Youtube video info.
 
@@ -63,8 +66,21 @@ class VideoInfo:
         for key in kwargs:
             setattr(self, key, kwargs[key])
 
+    def __str__(self):
+        return '<{0} {1}>'.format(
+            type(self).__name__,
+            {k: getattr(self, k) for k in self.__slots__}
+
+        )
+
 
 def get_channel_info(channel_id):
+    """
+    Returns info by given channel id using YouTube Data API V3
+
+    @param str channel_id: UCZVQF_796_ZqqEu48j7tnBg
+    @rtype: ChannelInfo
+    """
     url = (
         _API_URL +
         '/channels?part=contentDetails%2C+snippet'
@@ -136,6 +152,12 @@ def get_video_json(video_id):
 
 
 def get_video_info(url):
+    """
+    Returns info by given video url using YouTube Data API V3
+
+    @param str url: valid YouTube video url
+    @rtype: VideoInfo
+    """
     video_id = get_video_id(url)
     data = get_video_json(video_id)
     into_items = data['items'][0]
