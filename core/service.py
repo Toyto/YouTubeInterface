@@ -6,6 +6,34 @@ from django.conf import settings
 from social.apps.django_app.default.models import UserSocialAuth
 
 
+class ChannelInfo:
+
+    """
+    Youtube channel info.
+
+    @param str title: channel title
+    @param str video_id: channel id
+    @param str description: channel description
+    @param str small_thumbnail: small channel thumbnail
+    @param str medium_thumbnail: medium channel thumbnail
+    @param str high_thumbnail: high channel thumbnail
+    @param str standard_thumbnail: standard channel thumbnail
+    @param str max_thumbnail: max channel thumbnail
+    @param str google_plus_id: channel owner`s google id
+
+
+    """
+    __slots__ = [
+        'title', 'channel_id', 'description',
+        'medium_thumbnail', 'high_thumbnail',
+        'google_plus_id'
+    ]
+
+    def __init__(self, **kwargs):
+        for key in kwargs:
+            setattr(self, key, kwargs[key])
+
+
 class VideoInfo:
 
     """
@@ -23,9 +51,9 @@ class VideoInfo:
 
     """
     __slots__ = [
-        'title', 'video_id', 'description', 'small_thumbnail',
-        'medium_thumbnail', 'high_thumbnail', 'standard_thumbnail',
-        'max_thumbnail', 'author'
+        'title', 'video_id', 'description',
+        'small_thumbnail', 'medium_thumbnail', 'high_thumbnail',
+        'standard_thumbnail', 'max_thumbnail', 'author'
     ]
 
     def __init__(self, **kwargs):
@@ -43,34 +71,39 @@ part=contentDetails%2C+snippet&id=\
     )
     r = requests.get(json_url)
     # Convert it to a Python dictionary
-    data_channel = json.loads(r.text)
-    return data_channel
+    data = json.loads(r.text)
+    into_items = data['items'][0]
+    into_snippet_thumbnail = into_items['snippet']['thumbnails']
+    into_items_snippet = into_items['snippet']
+    return ChannelInfo(
+        title=into_items_snippet['title'],
+        channel_id=into_items['id'],
+        description=into_items_snippet['description'],
+        medium_thumbnail=into_snippet_thumbnail['medium']['url'],
+        high_thumbnail=into_snippet_thumbnail['high']['url'],
+        google_plus_id=into_items['contentDetails']['googlePlusUserId']
+    )
 
 
 def get_user_for_video_author(google_uid):
     try:
-        social_user_for_video = UserSocialAuth.objects.get(uid=google_uid)
-        existance = True
+        return UserSocialAuth.objects.get(uid=google_uid).user
     except UserSocialAuth.DoesNotExist:
-        social_user_for_video = None
-        existance = False
-    if existance:
-        user_object_for_video = social_user_for_video.user
-    else:
-        user_object_for_video = None
-    return user_object_for_video
+        return None
 
 
 def get_author_of_video(channel_id):
     channel_info = get_channel_info(channel_id)
-    channel_items = channel_info['items'][0]
-    google_plus_id = channel_items['contentDetails']['googlePlusUserId']
-    into_channel_items_thumbnail = channel_items['snippet']['thumbnails']
-    video_author = Author.objects.get_or_create(google_uid=google_plus_id,
-                                                defaults={'user': get_user_for_video_author(google_plus_id),
-                                                          'name': channel_items['snippet']['title'],
-                                                          'avatar_url': into_channel_items_thumbnail['medium']['url']})
-    return video_author
+    try:
+        return Author.objects.get(google_uid=channel_info.google_plus_id)
+    except Author.DoesNotExist:
+        return Author.objects.create(
+            google_uid=channel_info.google_plus_id,
+            user=get_user_for_video_author(
+                channel_info.google_plus_id),
+            name=channel_info.title,
+            avatar_url=channel_info.medium_thumbnail
+        )
 
 
 def get_video_id(url):
