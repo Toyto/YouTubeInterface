@@ -76,3 +76,11 @@ class User(AbstractBaseUser):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+class Author(models.Model):
+    google_uid = models.CharField(max_length=30, unique=True)
+    name = models.CharField(max_length=30)
+    avatar_url = models.URLField(max_length=200)
+    user = models.OneToOneField(User, null=True)
+    channel_id = models.CharField(max_length=30, unique=True)

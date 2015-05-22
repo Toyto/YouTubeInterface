@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from .models import User
+from .models import User, Author
 
 
 class UserCreationForm(forms.ModelForm):
@@ -82,6 +82,11 @@ class UserAdmin(UserAdmin):
     ordering = ('username',)
     filter_horizontal = ()
 
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ['name', 'user']
+
 admin.site.register(User, UserAdmin)
+admin.site.register(Author, AuthorAdmin)
+
 # unregister the Group model from admin.
 admin.site.unregister(Group)
