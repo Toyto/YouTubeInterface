@@ -66,7 +66,7 @@ class VideoInfo:
 
 def get_channel_info(channel_id):
     url = (
-        _API_URL
+        _API_URL +
         '/channels?part=contentDetails%2C+snippet'
         '&id={channel_id}'
         '&key={GOOGLE_API_KEY}'
@@ -104,9 +104,10 @@ def get_author_of_video(channel_id):
     except Author.DoesNotExist:
         return Author.objects.create(
             google_uid=channel_info.google_plus_id,
-            user=get_user_for_video_author(channel_info.google_plus_id),
             name=channel_info.title,
-            avatar_url=channel_info.medium_thumbnail
+            avatar_url=channel_info.medium_thumbnail,
+            user=get_user_for_video_author(channel_info.google_plus_id),
+            channel_id=channel_id
         )
 
 
@@ -121,12 +122,12 @@ def get_video_id(url):
 
 def get_video_json(video_id):
     url = (
-        _API_URL
+        _API_URL +
         '/videos?part=snippet'
         '&id={video_id}'
         '&key={GOOGLE_API_KEY}'
     )
-    json_url = video_url.format(
+    json_url = url.format(
         video_id=str(video_id),
         GOOGLE_API_KEY=str(settings.GOOGLE_API_KEY)
     )
@@ -148,7 +149,7 @@ def get_video_info(url):
         small_thumbnail=into_snippet_thumbnail['default']['url'],
         medium_thumbnail=into_snippet_thumbnail['medium']['url'],
         high_thumbnail=into_snippet_thumbnail['high']['url'],
-        standard_thumbnail=into_snippet_thumbnail['standard']['url'],
-        max_thumbnail=into_snippet_thumbnail['maxres']['url'],
+        standard_thumbnail=into_snippet_thumbnail.get('standard', {}).get('url'),
+        max_thumbnail=into_snippet_thumbnail.get('maxres', {}).get('url'),
         author=get_author_of_video(channel_id)
     )
