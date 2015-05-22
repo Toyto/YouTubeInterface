@@ -146,5 +146,3 @@ def get_video_info(url):
         max_thumbnail=into_snippet_thumbnail['maxres']['url'],
         author=get_author_of_video(channel_id)
     )
-
-get_video_info('https://youtu.be/yYfYVB1e988')
