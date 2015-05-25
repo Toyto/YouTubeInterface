@@ -20,4 +20,5 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'core.views.index', name='index'),
     url('', include('social.apps.django_app.urls', namespace='social')),
+    url(r'^publish/', 'core.views.publish', name='publish'),
 ]

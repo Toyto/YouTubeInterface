@@ -18,15 +18,19 @@
             <i class="user icon"></i> Login
           </a>
           {% endif %}
+          <div class="right menu">
+            <a class="item">
+                {% if user.is_authenticated %}
+                  You are authenticated as {{ request.user.get_full_name }}
+                {% endif %}
+            </a>
+          </div>
         </div>
 
 
     </head>
     <body>
-        {% if user.is_authenticated %}
-          You are authenticated as {{ request.user.get_full_name }}
-        {% endif %}
-        {% block content %}
-        {% endblock %}
+      {% block content %}
+      {% endblock %}
   </body>
 </html>
