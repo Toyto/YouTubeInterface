@@ -15,10 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from core.views import IndexView, PublishView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'core.views.index', name='index'),
+    url(r'^$', IndexView.as_view(), name='index'),
     url('', include('social.apps.django_app.urls', namespace='social')),
-    url(r'^publish/', 'core.views.publish', name='publish'),
+    url(r'^publish/', PublishView.as_view(), name='publish'),
 ]

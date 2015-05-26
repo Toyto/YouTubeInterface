@@ -1,14 +1,43 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 
+
+{% block scripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'js/publish_query.js' %}"></script>
+
+{% endblock %}
+
 {% block content %}
     <div class="ui three column centered grid">
         <div class="column">
-            <form class="ui large icon input" action="" method="post">
+            <form id="url_form" class="ui large icon input" action="" method="post">
                 {% csrf_token %}
                 {{ form }}
-              <input type="submit" placeholder="url">
+              <input id="btn_go" type="button" placeholder="url">
             </form>
         </div>
+    <div class="ui divider"></div>
+        <div class="ui grid" id="results">
+            <div class="ten wide column">
+                <div class="column">
+                    <h2>Title:</h2>
+                    <div id="title"></div>
+                    <h2>Description:</h2>
+                    <div id='description'></div>
+                </div>
+                <div class="column">
+                    <h2>Author:</h2>
+                    <div id='author'></div>
+                </div>
+            </div>
+            <div class="ten wide column"></div>
+        </div>
     </div>
+    <div class="ui divider"></div>
+    <div id="player"></div>
+
+
+
 {% endblock %}
+
