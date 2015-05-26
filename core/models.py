@@ -84,3 +84,13 @@ class Author(models.Model):
     avatar_url = models.URLField(max_length=200)
     user = models.OneToOneField(User, null=True)
     channel_id = models.CharField(max_length=30, unique=True)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=30)
+
+
+class Video(models.Model):
+    author = models.ForeignKey(Author)
+    categories = models.ManyToManyField(Category)
+    youtube_id = models.CharField(max_length=30)
