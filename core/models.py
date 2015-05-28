@@ -93,4 +93,4 @@ class Category(models.Model):
 class Video(models.Model):
     author = models.ForeignKey(Author)
     categories = models.ManyToManyField(Category)
-    youtube_id = models.CharField(max_length=30)
+    youtube_id = models.CharField(max_length=30, unique=True)

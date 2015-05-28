@@ -1,22 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import UrlForm
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from .service import get_video_info, VideoInfo
-from django.views.generic import View, TemplateView, FormView
-
-
-class IndexView(TemplateView):
-    template_name = 'core/index.html'
+from django.views.generic import RedirectView, TemplateView, FormView, View
+from .models import Video
 
 
 class PublishView(FormView):
-
     template_name = 'core/publish.html'
     form_class = UrlForm
-    success_url = 'publish/'
+
+    def form_valid(self, form):
+        url = form.cleaned_data.get('video_url')
+        video = get_video_info(url)
+        Video.objects.create(
+            author=video.author, youtube_id=video.video_id
+        )
+        return redirect('index')
+
+
+
+class VideoInfoView(View):
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form()
+        form = UrlForm(data=request.POST)
         if form.is_valid():
             url = form.cleaned_data.get('video_url')
             video = get_video_info(url)
@@ -24,7 +31,12 @@ class PublishView(FormView):
                 'video_info': {
                     'title': video.title,
                     'description': video.description,
-                    'video_id' : video.video_id,
+                    'video_id': video.video_id,
                     'author': video.author.name
                 }
             })
+        else:
+            return HttpResponseBadRequest()
+
+class IndexView(TemplateView):
+    template_name = 'core/index.html'
