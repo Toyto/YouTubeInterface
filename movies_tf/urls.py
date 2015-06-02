@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from core.views import IndexView, VideoInfoView, PublishView
+from core.models import Category
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),

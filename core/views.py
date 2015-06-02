@@ -3,21 +3,37 @@ from .forms import UrlForm
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
 from .service import get_video_info, VideoInfo
 from django.views.generic import RedirectView, TemplateView, FormView, View
-from .models import Video
+from .models import Video, Category
 
 
 class PublishView(FormView):
     template_name = 'core/publish.html'
     form_class = UrlForm
 
-    def form_valid(self, form):
-        url = form.cleaned_data.get('video_url')
-        video = get_video_info(url)
-        Video.objects.create(
-            author=video.author, youtube_id=video.video_id
-        )
-        return redirect('index')
+    def get_context_data(self, **kwargs):
+        context = super(PublishView, self).get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        return context
 
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            url = form.cleaned_data.get('video_url')
+            video = get_video_info(url)
+            Video.objects.create(
+                author=video.author, youtube_id=video.video_id
+            )
+        else:
+            return HttpResponseBadRequest()
+
+        checkboxes_values = request.POST.getlist('fun')
+
+        for value in checkboxes_values:
+            last_published_video = Video.objects.last()
+            category = Category.objects.all()[int(value) - 1]
+            last_published_video.categories.add(category)
+
+        return redirect('index')
 
 
 class VideoInfoView(View):
@@ -37,6 +53,7 @@ class VideoInfoView(View):
             })
         else:
             return HttpResponseBadRequest()
+
 
 class IndexView(TemplateView):
     template_name = 'core/index.html'

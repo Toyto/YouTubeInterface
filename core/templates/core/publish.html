@@ -35,7 +35,17 @@
                                         <div id='author'></div>
                                     </div>
                             </div>
-                        <div class="ui three column centered grid">
+                                <div id="checkboxes">
+                                    <div class="ui divider">Choose video categories</div>
+                                    {% for category in categories %}
+                                        <div class="ui checkbox" id="checkbox_{{ forloop.counter }}">
+                                            <input type="checkbox" name="fun" value="{{ forloop.counter }}">
+                                            <label>{{ category.name }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="ui divider"></div>
+                        <div class="ui five column centered grid">
                             <button class="large ui button" type="submit" id="publish">Publish</button>
                         </div>
                     </form>
