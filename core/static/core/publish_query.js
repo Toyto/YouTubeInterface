@@ -6,7 +6,7 @@ $(document).ready(function(){
             $('#btn_go').click(function(){
                 $.ajax({
                   type: "POST",
-                  url: "http://127.0.0.1:8000/ajax_publish/",
+                  url: _URLS.video_info,
                   data: $('#url_form').serialize(),
                   dataType: 'json',
                   success: function(json){
@@ -25,8 +25,7 @@ $(document).ready(function(){
                     $('#results').show('slow');
                     $('#publish').show('slow');
                     $('#checkboxes').show('slow');
-                    $('.checkbox').checkbox('attach events', '.check.button', 'check');
-                    $('.checkbox').checkbox('attach events', '.uncheck.button', 'uncheck');
+                    $('.checkbox').checkbox();
                   }
                 });
             });

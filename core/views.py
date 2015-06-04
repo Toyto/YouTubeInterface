@@ -16,21 +16,10 @@ class PublishView(FormView):
         return context
 
     def post(self, request, *args, **kwargs):
-        form = self.get_form()
-        if form.is_valid():
-            url = form.cleaned_data.get('video_url')
-            video = get_video_info(url)
-            Video.objects.create(
-                author=video.author, youtube_id=video.video_id
-            )
-        else:
-            return HttpResponseBadRequest()
-
-        checkboxes_values = request.POST.getlist('fun')
-
-        for value in checkboxes_values:
-            last_published_video = Video.objects.last()
-            category = Category.objects.all()[int(value) - 1]
+        checkboxes_values = request.POST.getlist('value')
+        last_published_video = Video.objects.last()
+        categories = Category.objects.filter(id__in=checkboxes_values)
+        for category in categories:
             last_published_video.categories.add(category)
 
         return redirect('index')
@@ -43,6 +32,9 @@ class VideoInfoView(View):
         if form.is_valid():
             url = form.cleaned_data.get('video_url')
             video = get_video_info(url)
+            Video.objects.create(
+                author=video.author, youtube_id=video.video_id
+            )
             return JsonResponse({
                 'video_info': {
                     'title': video.title,
