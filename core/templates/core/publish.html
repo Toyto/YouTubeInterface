@@ -20,16 +20,24 @@
         <div class="ui segment">
             <div class="ui centered grid">
                 <div class="six wide column">
-                    <form id="url_form" class="ui large icon input" method="POST">
+                    <form id="url_form" method="POST">
                         {% csrf_token %}
-                        {{ form }}
-                        <button class="ui button" type="button" id="btn_go">Upload</button>
+                        <div class="ui form">
+                          <div class="field">
+                            {{ form }}
+                          </div>
+                        </div>
+                        <br>
+                        <div class="ui centered grid">
+                            <button class="ui button" type="button" id="btn_go">Upload</button>
+                        </div>
                     </form>
                 </div>
+                <div id="results">
                     <div class="ui divider"></div>
                     <div id="player"></div>
                     <div class="ui divider"></div>
-                        <div class="ui centered grid" id="results">
+                        <div class="ui centered grid">
                             <div class="four wide column">
                                 <h2>Title:</h2>
                                 <div id="title"></div>
@@ -39,27 +47,31 @@
                             <div class="four wide column">
                                 <h2>Author:</h2>
                                 <div id='author'></div>
+                                <div id='auth_avatar'></div>
                             </div>
                         </div>
-                <form method="POST" id="url_form">
-                    {% csrf_token %}
-                    <div id="checkboxes">
-                    <div class="ui divider">Choose video categories</div>
-                        {% for category in categories %}
-                        <div class="ui checkbox" id="checkbox_{{ forloop.counter }}">
-                            <input type="checkbox" name="value" value="{{ category.id }}">
-                            <label>{{ category.name }}</label>
+                    <form method="POST" id="url_form">
+                        {% csrf_token %}
+                        <div id="checkboxes">
+                        <div class="ui divider">Choose video categories</div>
+                            {% for category in categories %}
+                            <div class="ui checkbox" id="checkbox_{{ forloop.counter }}">
+                                <input type="checkbox" name="value" value="{{ category.id }}">
+                                <label>{{ category.name }}</label>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
-                    </div>
-                    <div class="ui divider"></div>
-                    <div class="ui five column centered grid">
-                        <button class="large ui button" type="submit" id="publish">
-                            Publish
-                        </button>
-                    </div>
-                </form>
+                        <div class="ui divider"></div>
+                        <br>
+                        <div class="ui five column centered grid">
+                            <button class="large ui button" type="submit">
+                                Publish
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
+            <br>
         </div>
     </div>
 </div>
