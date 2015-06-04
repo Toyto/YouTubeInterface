@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import UrlForm
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from .service import get_video_info, VideoInfo
+from .service import get_video_info, VideoInfo, get_channel_info, ChannelInfo
 from django.views.generic import RedirectView, TemplateView, FormView, View
 from .models import Video, Category
 
@@ -35,12 +35,14 @@ class VideoInfoView(View):
             Video.objects.create(
                 author=video.author, youtube_id=video.video_id
             )
+            channel_info = get_channel_info(video.author.channel_id)
             return JsonResponse({
                 'video_info': {
                     'title': video.title,
                     'description': video.description,
                     'video_id': video.video_id,
-                    'author': video.author.name
+                    'author': video.author.name,
+                    'avatar': channel_info.medium_thumbnail
                 }
             })
         else:
