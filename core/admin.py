@@ -88,9 +88,13 @@ class AuthorAdmin(admin.ModelAdmin):
 class VideoAdmin(admin.ModelAdmin):
     list_display = ['author', 'youtube_id']
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Video, VideoAdmin)
+admin.site.register(Category, CategoryAdmin)
 
 # unregister the Group model from admin.
 admin.site.unregister(Group)

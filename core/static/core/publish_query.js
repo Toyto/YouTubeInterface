@@ -22,6 +22,10 @@ $(document).ready(function(){
                     );
                     $('#results').show('slow');
                     $('.checkbox').checkbox();
+                    $('#publish_btn').click(function(){
+                        $('<input>').attr('type','hidden').appendTo('url_form');
+                        $('#input_url').val($('#id_video_url').val());
+                    });
                   }
                 });
             });

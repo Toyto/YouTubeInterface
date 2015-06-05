@@ -4,6 +4,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpRe
 from .service import get_video_info, VideoInfo, get_channel_info, ChannelInfo
 from django.views.generic import RedirectView, TemplateView, FormView, View
 from .models import Video, Category
+from django.db import IntegrityError
 
 
 class PublishView(FormView):
@@ -16,11 +17,22 @@ class PublishView(FormView):
         return context
 
     def post(self, request, *args, **kwargs):
+
         checkboxes_values = request.POST.getlist('value')
-        last_published_video = Video.objects.last()
-        categories = Category.objects.filter(id__in=checkboxes_values)
-        for category in categories:
-            last_published_video.categories.add(category)
+        form = self.get_form()
+        if form.is_valid():
+            url = form.cleaned_data.get('video_url')
+            try:
+                video = get_video_info(url)
+                Video.objects.create(
+                    author=video.author, youtube_id=video.video_id
+                )
+                last_published_video = Video.objects.last()
+                categories = Category.objects.filter(id__in=checkboxes_values)
+                for category in categories:
+                    last_published_video.categories.add(category)
+            except IntegrityError:
+                pass
 
         return redirect('index')
 
@@ -32,9 +44,6 @@ class VideoInfoView(View):
         if form.is_valid():
             url = form.cleaned_data.get('video_url')
             video = get_video_info(url)
-            Video.objects.create(
-                author=video.author, youtube_id=video.video_id
-            )
             channel_info = get_channel_info(video.author.channel_id)
             return JsonResponse({
                 'video_info': {

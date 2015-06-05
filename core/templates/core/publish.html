@@ -52,6 +52,7 @@
                         </div>
                     <form method="POST" id="url_form">
                         {% csrf_token %}
+                        <input id="input_url" type="text" name="video_url" style="display:none">
                         <div id="checkboxes">
                         <div class="ui divider">Choose video categories</div>
                             {% for category in categories %}
@@ -64,7 +65,7 @@
                         <div class="ui divider"></div>
                         <br>
                         <div class="ui five column centered grid">
-                            <button class="large ui button" type="submit">
+                            <button class="large ui button" type="submit" id="publish_btn">
                                 Publish
                             </button>
                         </div>
