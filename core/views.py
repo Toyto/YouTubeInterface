@@ -1,10 +1,11 @@
-from django.shortcuts import render, redirect
-from .forms import UrlForm
-from django.http import JsonResponse, HttpResponse, HttpResponseRedirect, HttpResponseBadRequest
-from .service import get_video_info, VideoInfo, get_channel_info, ChannelInfo
-from django.views.generic import RedirectView, TemplateView, FormView, View
-from .models import Video, Category
 from django.db import IntegrityError
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.shortcuts import redirect
+from django.views.generic import TemplateView, FormView, View
+
+from .forms import UrlForm
+from .models import Video, Category
+from .service import get_video_info, get_channel_info
 
 
 class PublishView(FormView):
