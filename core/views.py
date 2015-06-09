@@ -24,10 +24,9 @@ class PublishView(FormView):
             url = form.cleaned_data.get('video_url')
             try:
                 video = get_video_info(url)
-                Video.objects.create(
+                last_published_video = Video.objects.create(
                     author=video.author, youtube_id=video.video_id
                 )
-                last_published_video = Video.objects.last()
                 categories = Category.objects.filter(id__in=checkboxes_values)
                 for category in categories:
                     last_published_video.categories.add(category)

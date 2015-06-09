@@ -1,5 +1,4 @@
 $(document).ready(function(){
-            $('#results').hide();
             $('#btn_go').click(function(){
                 $.ajax({
                   type: "POST",
@@ -7,7 +6,6 @@ $(document).ready(function(){
                   data: $('#url_form').serialize(),
                   dataType: 'json',
                   success: function(json){
-                    console.log(json['video_info']);
                     var author = json['video_info']['author'];
                     var title = json['video_info']['title'];
                     var description = json['video_info']['description'];
