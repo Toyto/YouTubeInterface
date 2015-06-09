@@ -4,7 +4,7 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
-from .models import User, Author
+from .models import User, Author, Video, Category
 
 
 class UserCreationForm(forms.ModelForm):
@@ -85,8 +85,16 @@ class UserAdmin(UserAdmin):
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ['name', 'user']
 
+class VideoAdmin(admin.ModelAdmin):
+    list_display = ['author', 'youtube_id']
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name']
+
 admin.site.register(User, UserAdmin)
 admin.site.register(Author, AuthorAdmin)
+admin.site.register(Video, VideoAdmin)
+admin.site.register(Category, CategoryAdmin)
 
 # unregister the Group model from admin.
 admin.site.unregister(Group)

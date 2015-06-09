@@ -1,16 +1,13 @@
-<!DOCTYPE html>
-
 {% load staticfiles %}
 
+<!DOCTYPE html>
 <html>
     <head>
-        <script type="text/javascript" src="{% static 'jquery/dist/jquery.js' %}"></script>
-        <script type="text/javascript" src="{% static 'semantic-ui/dist/semantic.js' %}"></script>
         <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
 
 
         <div class="ui inverted menu">
-          <a class="active item">
+          <a class="active item" href="{% url 'index' %}">
             <i class="home icon"></i> Home
           </a>
           {% if request.user.is_anonymous %}
@@ -18,15 +15,24 @@
             <i class="user icon"></i> Login
           </a>
           {% endif %}
+          <div class="right menu">
+            <a class="item">
+                {% if user.is_authenticated %}
+                  You are authenticated as {{ request.user.get_full_name }}
+                {% endif %}
+            </a>
+          </div>
         </div>
 
 
     </head>
     <body>
-        {% if user.is_authenticated %}
-          You are authenticated as {{ request.user.get_full_name }}
-        {% endif %}
-        {% block content %}
-        {% endblock %}
-  </body>
+      {% block content %}
+      {% endblock %}
+
+      {% block scripts %}
+        <script type="text/javascript" src="{% static 'jquery/dist/jquery.js' %}"></script>
+        <script type="text/javascript" src="{% static 'semantic-ui/dist/semantic.js' %}"></script>
+      {% endblock %}
+    </body>
 </html>
