@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from core.views import IndexView, VideoInfoView, PublishView
+from core.views import IndexView, VideoInfoView, PublishView, VideoView
 from core.models import Category
 
 urlpatterns = [
@@ -24,4 +24,5 @@ urlpatterns = [
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^publish/', PublishView.as_view(), name='publish'),
     url(r'^ajax_publish/', VideoInfoView.as_view(), name='video_info'),
+    url(r'^more_videos/', VideoView.as_view(), name='videos'),
 ]

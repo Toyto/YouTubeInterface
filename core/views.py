@@ -26,7 +26,9 @@ class PublishView(FormView):
             try:
                 video = get_video_info(url)
                 last_published_video = Video.objects.create(
-                    author=video.author, youtube_id=video.video_id
+                    author=video.author, youtube_id=video.video_id,
+                    name=video.title, thumbnail=video.medium_thumbnail,
+                    description=video.description
                 )
                 categories = Category.objects.filter(id__in=checkboxes_values)
                 for category in categories:
@@ -60,3 +62,17 @@ class VideoInfoView(View):
 
 class IndexView(TemplateView):
     template_name = 'core/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['videos'] = Video.objects.all()
+        return context
+
+
+class VideoView(TemplateView):
+    template_name = 'core/videos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(VideoView, self).get_context_data(**kwargs)
+        context['videos'] = Video.objects.all()
+        return context

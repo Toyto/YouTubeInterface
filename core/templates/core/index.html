@@ -1,15 +1,27 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-{% block content %}
-   <div class="ui column centered grid">
 
-    <div class="twelve column centered row">
-      <div class="column">Content</div>
-    </div>
-  </div>
-    <a href="{% url 'publish' %}"><div class="ui button">
-        Publish video
-    </div>
-    </a>
+{% block scripts %}
+    {{ block.super }}
+    <script type="text/javascript" src="{% static 'core/show_videos.js' %}"></script>
+    <script type="text/javascript">
+        window._URLS = {
+            video_info : "{% url 'videos' %}"
+        }
+    </script>
+
+{% endblock %}
+
+{% block content %}
+  <a href="{% url 'publish' %}">
+      <div class="ui button">
+          Publish video
+      </div>
+  </a>
+  <div class="ui divider"></div>
+  <div id="videos"></div>
+  <div id="more_videos"></div>
+  <button class="large ui button" type="button" id="more">Show more...</button>
+
 {% endblock %}
