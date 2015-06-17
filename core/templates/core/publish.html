@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
-
+{% load widget_tweaks %}
 
 {% block scripts %}
     {{ block.super }}
@@ -15,62 +15,88 @@
 
 {% block content %}
 <div class="ui centered grid">
-    <h1>Page for publications</h1>
     <div class="twelve wide column">
+        <div class="ui steps">
+            <div id="step-add-video" class="active step">
+                <i class="youtube icon"></i>
+                <div class="content">
+                    <div class="title">Add video</div>
+                    <div class="description">Post your video's url</div>
+                </div>
+            </div>
+            <div id="step-select-categories" class="disabled step">
+                <i class="info icon"></i>
+                <div class="content">
+                    <div class="title">Select categories</div>
+                </div>
+            </div>
+        </div>
+
         <div class="ui segment">
             <div class="ui centered grid">
-                <div class="six wide column">
-                    <form id="url_form" method="POST">
-                        {% csrf_token %}
-                        <div class="ui form">
-                          <div class="field">
-                            {{ form }}
-                          </div>
-                        </div>
-                        <br>
-                        <div class="ui centered grid">
-                            <button class="ui button" type="button" id="btn_go">Upload</button>
-                        </div>
-                    </form>
+                <div class="row">
+                    <div class="sixteen wide centered column">
+                        <form id="url_form" class="ui form" method="POST">
+                            {% csrf_token %}
+                            <div class="ui large action left icon input">
+                                <i class="search icon"></i>
+                                {% render_field form.video_url placeholder="Type YouTube video url" %}
+                                <div id="btn_go" class="ui teal button">Upload</div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div id="results" style="display:none">
-                    <div class="ui divider"></div>
+
+                <div class="ui divider step2" style="display:none"></div>
+
+                <div id="video-block" class="row step2" style="display:none">
                     <div id="player"></div>
-                    <div class="ui divider"></div>
-                        <div class="ui centered grid">
-                            <div class="four wide column">
-                                <h2>Title:</h2>
-                                <div id="title"></div>
-                                <h2>Description:</h2>
-                                <div id="description"></div>
-                            </div>
-                            <div class="four wide column">
-                                <h2>Author:</h2>
-                                <h3><i><div id="author"></div></i></h3>
-                                <br>
-                                <div id="auth_avatar"></div>
+                </div>
+
+                <div class="ui divider step2" style="display:none"></div>
+
+                <div id="info-block" class="row step2" style="display:none">
+                    <div class="sixteen wide column">
+                        <div class="ui items">
+                            <div class="item">
+                                <div class="image">
+                                    <img id="author_avatar" class="" src="" alt="">
+                                </div>
+                                <div class="content">
+                                    <a id="title" class="header"></a>
+                                    <div class="meta">
+                                        <span id="author"></span>
+                                    </div>
+                                    <div id="description" class="description"></div>
+                                </div>
                             </div>
                         </div>
-                    <form method="POST" id="url_form">
-                        {% csrf_token %}
-                        <input id="input_url" type="text" name="video_url" style="display:none">
-                        <div id="checkboxes">
-                        <div class="ui divider">Choose video categories</div>
+                    </div>
+                </div>
+
+                <div class="row step2" style="display:none">
+                    <div class="ui divider"></div>
+                    <div class="ten wide column">
+                        <h4 class="ui header">Select categories</h4>
+                        <form id="submit-form" class="ui form" method="POST">
+                            {% csrf_token %}
+                            <input id="input_url" type="text" name="video_url" style="display:none">
+
                             {% for category in categories %}
-                            <div class="ui checkbox" id="checkbox_{{ forloop.counter }}">
-                                <input type="checkbox" name="value" value="{{ category.id }}">
-                                <label>{{ category.name }}</label>
+                            <div class="field">
+                                <div class="ui checkbox">
+                                    <input type="checkbox" name="value" value="{{ category.id }}" style="display:none">
+                                    <label>{{ category.name }}</label>
+                                </div>
                             </div>
                             {% endfor %}
-                        </div>
-                        <div class="ui divider"></div>
-                        <br>
-                        <div class="ui five column centered grid">
-                            <button class="large ui button" type="submit" id="publish_btn">
-                                Publish
-                            </button>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="row step2" style="display:none">
+                    <div class="ui divider"></div>
+                    <button id="publish_button" class="large ui blue button" type="submit">Publish</button>
                 </div>
             </div>
             <br>
