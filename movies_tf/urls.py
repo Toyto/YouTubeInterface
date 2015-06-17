@@ -25,7 +25,7 @@ urlpatterns = patterns('',
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^publish/', PublishView.as_view(), name='publish'),
     url(r'^ajax_publish/', VideoInfoView.as_view(), name='video_info'),
-    url(r'^more_videos/', VideoView.as_view(), name='videos'),
+    url(r'^videos/', VideoView.as_view(), name='videos'),
 )
 
 if settings.DEBUG:
