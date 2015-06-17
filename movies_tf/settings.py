@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'djangobower',
+    'widget_tweaks',
     'core',
     'social.apps.django_app.default',
 )
@@ -103,7 +104,7 @@ BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 
 BOWER_INSTALLED_APPS = (
     'jquery#2.1.4',
-    'semantic-ui#1.12.2',
+    'semantic-ui#1.12.3',
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
