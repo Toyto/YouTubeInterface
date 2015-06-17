@@ -5,9 +5,11 @@
 {% block scripts %}
     {{ block.super }}
     <script type="text/javascript" src="{% static 'core/show_videos.js' %}"></script>
+    <script type="text/javascript" src="{% static 'core/ratio.js' %}"></script>
     <script type="text/javascript">
         window._URLS = {
-            video_info : "{% url 'videos' %}"
+            videos : "{% url 'videos' %}",
+            index : "{% url 'index' %}"
         }
     </script>
 
@@ -20,8 +22,9 @@
       </div>
   </a>
   <div class="ui divider"></div>
-  <div id="videos"></div>
+  {% for category_info in categories %}
+    {% include 'core/videos.html' with category=category_info.category videos=category_info.videos %}
+  {% endfor %}
   <div id="more_videos"></div>
-  <button class="large ui button" type="button" id="more">Show more...</button>
 
 {% endblock %}

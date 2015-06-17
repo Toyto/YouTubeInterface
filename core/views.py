@@ -1,11 +1,13 @@
 from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
-from django.views.generic import TemplateView, FormView, View
+from django.views.generic import TemplateView, FormView, View, ListView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic.list import MultipleObjectMixin
 
 from .forms import UrlForm
 from .models import Video, Category
-from .service import get_video_info, get_channel_info
+from .service import get_video_info, get_channel_info, get_video_rating, get_category_videos
 
 
 class PublishView(FormView):
@@ -28,7 +30,9 @@ class PublishView(FormView):
                 last_published_video = Video.objects.create(
                     author=video.author, youtube_id=video.video_id,
                     name=video.title, thumbnail=video.medium_thumbnail,
-                    description=video.description
+                    description=video.description, views_count=video.view_count,
+                    likes_count=video.likes_count, dislikes_count=video.dislikes_count,
+                    ratio=get_video_rating(video.likes_count, video.dislikes_count)
                 )
                 categories = Category.objects.filter(id__in=checkboxes_values)
                 for category in categories:
@@ -65,7 +69,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        context['videos'] = Video.objects.all()
+        context['categories'] = map(get_category_videos, Category.objects.all())
         return context
 
 
@@ -74,5 +78,8 @@ class VideoView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(VideoView, self).get_context_data(**kwargs)
-        context['videos'] = Video.objects.all()
+        category = Category.objects.get(id=self.request.GET['id'])
+        count = int(self.request.GET['count'])
+        count = count + 4
+        context.update(get_category_videos(category, count))
         return context
