@@ -9,30 +9,34 @@
                 <img src="{{ video.thumbnail }}">
               </a>
               <div class="content">
-                <a class="header">{{ video.name }}</a>
+                <a class="header" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                    {{ video.name }}
+                </a>
                 <div class="meta">
-                  <a>{{ video.author.name }}</a>
+                  <a style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                    {{ video.author.name }}
+                  </a>
                 </div>
                 <div class="meta">
                   <a>Views <b>{{ video.views_count }}</b></a>
                 </div>
                 <div class="description">
                 </div>
-                <div class="ui star rating" data-rating="{{ video.ratio }}" id="ratio"></div>
+                <div class="ui star rating" data-rating="{{ video.ratio }}"></div>
               </div>
             </div>
           </div>
       </div>
-        {% if forloop.last %}
-          <div id="video_count" data-video-count="{{ forloop.counter }}"></div>
-        {% endif %}
       {% endfor %}
-      <div class="ui divider"></div>
-      <div class="ui centered grid">
-        <button class="large ui button" type="button" id="more" data-category-id="{{ category.id }}">
-          Show more...
-        </button>
-      </div>
-      <div class="ui divider"></div>
+      {% if has_next %}
+        <div class="ui divider"></div>
+        <div class="ui centered grid">
+          <button class="large ui button" type="button" id="btn_for_category{{ category.id }}"
+          data-category-id="{{ category.id }}" data-video-count="{{ videos|length }}">
+            Show more...
+          </button>
+        </div>
+        <div class="ui divider"></div>
+      {% endif %}
   </div>
 </div>

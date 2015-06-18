@@ -1,3 +1,3 @@
 $(document).ready(function(){
-            $('.rating').rating('disable');
-            });
+    $('.rating').rating('disable');
+});

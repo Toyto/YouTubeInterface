@@ -23,8 +23,10 @@
   </a>
   <div class="ui divider"></div>
   {% for category_info in categories %}
-    {% include 'core/videos.html' with category=category_info.category videos=category_info.videos %}
+    <div class="more_videos">
+      {% include 'core/videos.html' with category=category_info.category videos=category_info.videos has_next=category_info.has_next %}
+    </div>
   {% endfor %}
-  <div id="more_videos"></div>
+
 
 {% endblock %}

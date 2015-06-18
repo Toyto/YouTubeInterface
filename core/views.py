@@ -70,6 +70,7 @@ class IndexView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
         context['categories'] = map(get_category_videos, Category.objects.all())
+        context['has_next'] = True
         return context
 
 
@@ -80,6 +81,5 @@ class VideoView(TemplateView):
         context = super(VideoView, self).get_context_data(**kwargs)
         category = Category.objects.get(id=self.request.GET['id'])
         count = int(self.request.GET['count'])
-        count = count + 4
         context.update(get_category_videos(category, count))
         return context
