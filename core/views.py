@@ -7,7 +7,7 @@ from django.views.generic.list import MultipleObjectMixin
 
 from .forms import UrlForm
 from .models import Video, Category
-from .service import get_video_info, get_channel_info, get_video_rating, get_category_videos
+from . import service
 
 
 class PublishView(FormView):
@@ -26,13 +26,13 @@ class PublishView(FormView):
         if form.is_valid():
             url = form.cleaned_data.get('video_url')
             try:
-                video = get_video_info(url)
+                video = service.get_video_info(url)
                 last_published_video = Video.objects.create(
                     author=video.author, youtube_id=video.video_id,
                     name=video.title, thumbnail=video.medium_thumbnail,
                     description=video.description, views_count=video.view_count,
                     likes_count=video.likes_count, dislikes_count=video.dislikes_count,
-                    ratio=get_video_rating(video.likes_count, video.dislikes_count)
+                    rating=service.get_video_rating(video.likes_count, video.dislikes_count)
                 )
                 categories = Category.objects.filter(id__in=checkboxes_values)
                 for category in categories:
@@ -49,8 +49,8 @@ class VideoInfoView(View):
         form = UrlForm(data=request.POST)
         if form.is_valid():
             url = form.cleaned_data.get('video_url')
-            video = get_video_info(url)
-            channel_info = get_channel_info(video.author.channel_id)
+            video = service.get_video_info(url)
+            channel_info = service.get_channel_info(video.author.channel_id)
             return JsonResponse({
                 'video_info': {
                     'title': video.title,
@@ -69,8 +69,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(IndexView, self).get_context_data(**kwargs)
-        context['categories'] = map(get_category_videos, Category.objects.all())
-        context['has_next'] = True
+        context['categories'] = map(service.get_category_videos, Category.objects.all())
         return context
 
 
@@ -81,5 +80,5 @@ class VideoView(TemplateView):
         context = super(VideoView, self).get_context_data(**kwargs)
         category = Category.objects.get(id=self.request.GET['id'])
         count = int(self.request.GET['count'])
-        context.update(get_category_videos(category, count))
+        context.update(service.get_category_videos(category, count))
         return context

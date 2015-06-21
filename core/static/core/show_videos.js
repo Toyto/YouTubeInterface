@@ -1,6 +1,6 @@
 $(document).ready(function(){
-  $(".more_videos").on("click", "button", function(event){
-      console.log(event);
+  $('.rating').rating('disable');
+  $(".more_videos").on("click", "button", function(){
       var category_id = $( this ).attr("data-category-id");
       var video_count = parseInt($("#btn_for_category" + category_id).attr("data-video-count"));
       $.ajax({

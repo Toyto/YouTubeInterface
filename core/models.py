@@ -102,7 +102,7 @@ class Video(models.Model):
     youtube_id = models.CharField(max_length=30, unique=True)
     name = models.CharField(max_length=100, default='None')
     thumbnail = models.CharField(max_length=200, default='None')
-    ratio = models.IntegerField(default=0)
+    rating = models.IntegerField(default=0)
     description = models.CharField(max_length=300, default='None')
     views_count = models.IntegerField(default=0)
     likes_count = models.IntegerField(default=0)

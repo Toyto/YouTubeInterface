@@ -13,6 +13,11 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='video',
+            name='description',
+            field=models.CharField(default='None', max_length=300),
+        ),
+        migrations.AddField(
+            model_name='video',
             name='dislikes_count',
             field=models.IntegerField(default=0),
         ),
@@ -28,7 +33,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='video',
-            name='ratio',
+            name='rating',
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(

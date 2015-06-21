@@ -86,7 +86,8 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = ['name', 'user']
 
 class VideoAdmin(admin.ModelAdmin):
-    list_display = ['author', 'youtube_id']
+    list_display = ['author', 'youtube_id', 'rating', 'description',
+                    'views_count', 'likes_count', 'dislikes_count']
     list_filter = ('categories',)
 
 class CategoryAdmin(admin.ModelAdmin):

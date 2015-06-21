@@ -1,10 +1,9 @@
 import json
 import requests
 import re
-from .models import Author, Video, Category
+from .models import Author, Video
 from django.conf import settings
 from social.apps.django_app.default.models import UserSocialAuth
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 
