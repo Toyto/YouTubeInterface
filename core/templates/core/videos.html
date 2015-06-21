@@ -11,14 +11,18 @@
             {{ video.name }}
         </a>
         <div class="meta">
-          <a style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-            {{ video.author.name }}
-          </a>
+          <span class="">{{ video.views_count }} views</span>
+          <span class="date right floated">N days ago</span>
         </div>
-        <div class="meta">
-          <a>Views <b>{{ video.views_count }}</b></a>
+      </div>
+      <div class="extra content">
+        <div class="right floated" style="padding: 0.65em 0">
+          <div class="ui star rating" data-rating="{{ video.rating }}"></div>
         </div>
-        <div class="ui star rating" data-rating="{{ video.rating }}"></div>
+        <div class="left floated">
+          <img class="ui avatar image" src="{{ video.author.avatar_url }}">
+          {{ video.author.name }}
+        </div>
       </div>
     </div>
 {% endfor %}
