@@ -12,7 +12,7 @@
         </a>
         <div class="meta">
           <span class="">{{ video.views_count }} views</span>
-          <span class="date right floated">N days ago</span>
+          <span class="date right floated">{{ video.publish_at|timesince }}</span>
         </div>
       </div>
       <div class="extra content">

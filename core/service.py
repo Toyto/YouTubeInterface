@@ -1,9 +1,12 @@
 import json
 import requests
 import re
+import datetime
 from .models import Author, Video
 from django.conf import settings
 from social.apps.django_app.default.models import UserSocialAuth
+from django.utils.timezone import utc
+
 
 
 
@@ -58,7 +61,7 @@ class VideoInfo:
     @param int likes_count: video likes
     @param int dislikes_count: video dislikes
     @param int view_count: video views
-
+    @param datetime published_at : when published
 
 
     """
@@ -66,7 +69,8 @@ class VideoInfo:
         'title', 'video_id', 'description',
         'small_thumbnail', 'medium_thumbnail', 'high_thumbnail',
         'standard_thumbnail', 'max_thumbnail', 'author',
-        'likes_count', 'dislikes_count', 'view_count'
+        'likes_count', 'dislikes_count', 'view_count',
+        'published_at'
     ]
 
     def __init__(self, **kwargs):
@@ -182,6 +186,11 @@ def get_category_videos(category, videos_per_page=4):
         'has_next': videos.count() > videos_per_page
     }
 
+def get_publish_datetime(s):
+    published_at = datetime.datetime(int(s[0:4]), int(s[5:7]),int(s[8:10]),
+                                    int(s[11:13]), int(s[14:16]), int(s[17:19]))
+    return published_at
+
 def get_video_info(url):
     """
     Returns info by given video url using YouTube Data API V3
@@ -198,6 +207,7 @@ def get_video_info(url):
     likes_count = into_items['statistics']['likeCount']
     dislikes_count = into_items['statistics']['dislikeCount']
     view_count = into_items['statistics']['viewCount']
+    published_at = get_publish_datetime(into_items_snippet['publishedAt'])
 
     return VideoInfo(
         title=into_items_snippet['title'],
@@ -211,5 +221,6 @@ def get_video_info(url):
         author=get_author_of_video(channel_id),
         likes_count=likes_count,
         dislikes_count=dislikes_count,
-        view_count=view_count
+        view_count=view_count,
+        published_at=published_at
     )

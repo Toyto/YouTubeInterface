@@ -30,7 +30,8 @@ class PublishView(FormView):
                     name=video.title, thumbnail=video.medium_thumbnail,
                     description=video.description, views_count=video.view_count,
                     likes_count=video.likes_count, dislikes_count=video.dislikes_count,
-                    rating=service.get_video_rating(video.likes_count, video.dislikes_count)
+                    rating=service.get_video_rating(video.likes_count, video.dislikes_count),
+                    publish_at=video.published_at
                 )
                 categories = Category.objects.filter(id__in=checkboxes_values)
                 for category in categories:
