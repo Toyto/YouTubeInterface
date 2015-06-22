@@ -8,12 +8,11 @@ from social.apps.django_app.default.models import UserSocialAuth
 from django.utils.timezone import utc
 
 
-
-
 _API_URL = 'https://www.googleapis.com/youtube/v3'
 
 
 class ChannelInfo:
+
     """
     Youtube channel info.
 
@@ -46,6 +45,7 @@ class ChannelInfo:
 
 
 class VideoInfo:
+
     """
     Youtube video info.
 
@@ -161,6 +161,7 @@ def get_video_json(video_id):
     data = json.loads(requests.get(json_url).text)
     return data
 
+
 def get_video_rating(likes_count, dislikes_count):
     """
     Returns integer in range [1..4] representing video's rating where
@@ -178,6 +179,7 @@ def get_video_rating(likes_count, dislikes_count):
     else:
         return 4
 
+
 def get_category_videos(category, videos_per_page=4):
     videos = Video.objects.filter(categories=category)
     return {
@@ -186,10 +188,6 @@ def get_category_videos(category, videos_per_page=4):
         'has_next': videos.count() > videos_per_page
     }
 
-def get_publish_datetime(s):
-    published_at = datetime.datetime(int(s[0:4]), int(s[5:7]),int(s[8:10]),
-                                    int(s[11:13]), int(s[14:16]), int(s[17:19]))
-    return published_at
 
 def get_video_info(url):
     """
@@ -207,7 +205,10 @@ def get_video_info(url):
     likes_count = into_items['statistics']['likeCount']
     dislikes_count = into_items['statistics']['dislikeCount']
     view_count = into_items['statistics']['viewCount']
-    published_at = get_publish_datetime(into_items_snippet['publishedAt'])
+    video_datetime = into_items_snippet['publishedAt']
+    published_at = datetime.datetime.strptime(
+        video_datetime, "%Y-%m-%dT%H:%M:%S.000Z"
+    )
 
     return VideoInfo(
         title=into_items_snippet['title'],
@@ -216,7 +217,8 @@ def get_video_info(url):
         small_thumbnail=into_snippet_thumbnail['default']['url'],
         medium_thumbnail=into_snippet_thumbnail['medium']['url'],
         high_thumbnail=into_snippet_thumbnail['high']['url'],
-        standard_thumbnail=into_snippet_thumbnail.get('standard', {}).get('url'),
+        standard_thumbnail=into_snippet_thumbnail.get(
+            'standard', {}).get('url'),
         max_thumbnail=into_snippet_thumbnail.get('maxres', {}).get('url'),
         author=get_author_of_video(channel_id),
         likes_count=likes_count,
