@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 
-
 {% block scripts %}
     {{ block.super }}
     <script type="text/javascript" src="{% static 'core/show_videos.js' %}"></script>
@@ -14,17 +13,19 @@
 {% endblock %}
 
 {% block content %}
+<div class="row">
   <a href="{% url 'publish' %}">
       <div class="ui button">
           Publish video
       </div>
   </a>
   <div class="ui divider"></div>
-  {% for category_info in categories %}
-    <div class="more_videos">
-      {% include 'core/videos.html' with category=category_info.category videos=category_info.videos has_next=category_info.has_next %}
-    </div>
-  {% endfor %}
+</div>
 
+{% for category_info in categories %}
+  <div class="sixteen wide column">
+    {% include 'core/videos.html' with category=category_info.category videos=category_info.videos has_next=category_info.has_next %}
+  </div>
+{% endfor %}
 
 {% endblock %}

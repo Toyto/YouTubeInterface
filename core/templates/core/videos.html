@@ -1,38 +1,44 @@
-<div class="{{ category.id }}">
-  <h2 style="margin-left: 0.4em;"> {{ category.name }} </h2>
-  <div class="ui four cards" style="margin-left: 0.1em; margin-right: 0.1em;">
-{% for video in videos %}
-    <div class="card">
-      <a class="image">
-        <img src="{{ video.thumbnail }}">
-      </a>
-      <div class="content">
-        <a class="header" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
-            {{ video.name }}
-        </a>
-        <div class="meta">
-          <span class="">{{ video.views_count }} views</span>
-          <span class="date right floated">{{ video.publish_at|timesince }}</span>
+{% load core %}
+
+<div class="category-block">
+  <div class="ui grid">
+    <div class="sixteen wide column">
+      <h2>{{ category.name }} videos</h2>
+    </div>
+    <div class="sixteen wide column">
+      <div class="ui four cards">
+        {% for video in videos %}
+        <div class="card">
+          <a class="image">
+            <img src="{{ video.thumbnail }}">
+          </a>
+          <div class="content">
+            <a class="header" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                {{ video.name }}
+            </a>
+            <div class="meta">
+              <span class="">{{ video.views_count }} views</span>
+              <span class="date right floated">{{ video.publish_at|short_timesince }} ago</span>
+            </div>
+            <div class="meta">
+              <span class="left floated">Rating</span>
+              <div class="ui star rating right floated" data-rating="{{ video.rating }}"></div>
+            </div>
+          </div>
+          <div class="extra content">
+            <img class="ui avatar image" src="{{ video.author.avatar_url }}">
+            <a style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">{{ video.author.name }}</a>
+          </div>
         </div>
-      </div>
-      <div class="extra content">
-        <div class="right floated" style="padding: 0.65em 0">
-          <div class="ui star rating" data-rating="{{ video.rating }}"></div>
-        </div>
-        <div class="left floated">
-          <img class="ui avatar image" src="{{ video.author.avatar_url }}">
-          {{ video.author.name }}
-        </div>
+        {% endfor %}
       </div>
     </div>
-{% endfor %}
+    <div class="sixteen wide centered row">
+      {% if has_next %}
+        <button class="large ui button show-more-btn" data-category-id="{{ category.id }}" data-video-count="{{ videos|length }}">
+          Show more...
+        </button>
+      {% endif %}
+    </div>
   </div>
-
-{% if has_next %}
-    <button class="large ui button" id="btn_for_category{{ category.id }}"
-    data-category-id="{{ category.id }}" data-video-count="{{ videos|length }}" style="margin-left: 45%;
-  margin-top: 1%; margin-bottom: 1%;">
-      Show more...
-    </button>
-{% endif %}
 </div>
