@@ -1,4 +1,4 @@
-<div id="{{ category.id }}" value="content">
+<div class="{{ category.id }}">
   <h2 style="margin-left: 0.4em;"> {{ category.name }} </h2>
   <div class="ui four cards" style="margin-left: 0.1em; margin-right: 0.1em;">
 {% for video in videos %}
@@ -29,9 +29,9 @@
   </div>
 
 {% if has_next %}
-    <button class="large ui button" type="button" id="btn_for_category{{ category.id }}"
-    data-category-id="{{ category.id }}" data-video-count="{{ videos|length }}" style="margin-left: 35em;
-  margin-top: 1em; margin-bottom: 1em;">
+    <button class="large ui button" id="btn_for_category{{ category.id }}"
+    data-category-id="{{ category.id }}" data-video-count="{{ videos|length }}" style="margin-left: 45%;
+  margin-top: 1%; margin-bottom: 1%;">
       Show more...
     </button>
 {% endif %}

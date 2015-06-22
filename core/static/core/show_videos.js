@@ -9,7 +9,8 @@ $(document).ready(function(){
         data: { id: category_id, count: video_count + 4 },
         dataType: "html",
         success: function(data){
-          $("#" + category_id + "").html(data);
+          console.log(data);
+          $("." + category_id + "").replaceWith(data);
           $('.rating').rating('disable');
         }
       });

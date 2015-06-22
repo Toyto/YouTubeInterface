@@ -2,8 +2,6 @@ from django.db import IntegrityError
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.shortcuts import redirect
 from django.views.generic import TemplateView, FormView, View, ListView
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.generic.list import MultipleObjectMixin
 
 from .forms import UrlForm
 from .models import Video, Category
