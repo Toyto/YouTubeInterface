@@ -5,7 +5,6 @@
     <head>
         <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
 
-
         <div class="ui inverted menu">
           <a class="active item" href="{% url 'index' %}">
             <i class="home icon"></i> Home
@@ -23,12 +22,12 @@
             </a>
           </div>
         </div>
-
-
     </head>
     <body>
-      {% block content %}
-      {% endblock %}
+      <div class="ui page grid">
+        {% block content %}
+        {% endblock %}
+      </div>
 
       {% block scripts %}
         <script type="text/javascript" src="{% static 'jquery/dist/jquery.js' %}"></script>

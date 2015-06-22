@@ -1,15 +1,18 @@
 import json
 import requests
 import re
-from .models import Author
+import datetime
+from .models import Author, Video
 from django.conf import settings
 from social.apps.django_app.default.models import UserSocialAuth
+from django.utils.timezone import utc
 
 
 _API_URL = 'https://www.googleapis.com/youtube/v3'
 
 
 class ChannelInfo:
+
     """
     Youtube channel info.
 
@@ -42,6 +45,7 @@ class ChannelInfo:
 
 
 class VideoInfo:
+
     """
     Youtube video info.
 
@@ -54,12 +58,19 @@ class VideoInfo:
     @param str standard_thumbnail: standard video thumbnail
     @param str max_thumbnail: max video thumbnail
     @param core.models.Author author: Author object
+    @param int likes_count: video likes
+    @param int dislikes_count: video dislikes
+    @param int view_count: video views
+    @param datetime published_at : when published
+
 
     """
     __slots__ = [
         'title', 'video_id', 'description',
         'small_thumbnail', 'medium_thumbnail', 'high_thumbnail',
-        'standard_thumbnail', 'max_thumbnail', 'author'
+        'standard_thumbnail', 'max_thumbnail', 'author',
+        'likes_count', 'dislikes_count', 'view_count',
+        'published_at'
     ]
 
     def __init__(self, **kwargs):
@@ -139,7 +150,7 @@ def get_video_id(url):
 def get_video_json(video_id):
     url = (
         _API_URL +
-        '/videos?part=snippet'
+        '/videos?part=snippet%2C+statistics'
         '&id={video_id}'
         '&key={GOOGLE_API_KEY}'
     )
@@ -149,6 +160,33 @@ def get_video_json(video_id):
     )
     data = json.loads(requests.get(json_url).text)
     return data
+
+
+def get_video_rating(likes_count, dislikes_count):
+    """
+    Returns integer in range [1..4] representing video's rating where
+    1 is the worst and 4 is the best.
+    """
+    likes_count = int(likes_count)
+    dislikes_count = int(dislikes_count)
+    ratio = likes_count / (likes_count + dislikes_count)
+    if ratio < 0.5:
+        return 1
+    elif ratio < 0.7:
+        return 2
+    elif ratio < 0.9:
+        return 3
+    else:
+        return 4
+
+
+def get_category_videos(category, videos_per_page=4):
+    videos = Video.objects.filter(categories=category)
+    return {
+        'category': category,
+        'videos': list(videos[0:videos_per_page]),
+        'has_next': videos.count() > videos_per_page
+    }
 
 
 def get_video_info(url):
@@ -164,6 +202,14 @@ def get_video_info(url):
     channel_id = into_items['snippet']['channelId']
     into_snippet_thumbnail = into_items['snippet']['thumbnails']
     into_items_snippet = into_items['snippet']
+    likes_count = into_items['statistics']['likeCount']
+    dislikes_count = into_items['statistics']['dislikeCount']
+    view_count = into_items['statistics']['viewCount']
+    video_datetime = into_items_snippet['publishedAt']
+    published_at = datetime.datetime.strptime(
+        video_datetime, "%Y-%m-%dT%H:%M:%S.000Z"
+    )
+
     return VideoInfo(
         title=into_items_snippet['title'],
         video_id=into_items['id'],
@@ -171,7 +217,12 @@ def get_video_info(url):
         small_thumbnail=into_snippet_thumbnail['default']['url'],
         medium_thumbnail=into_snippet_thumbnail['medium']['url'],
         high_thumbnail=into_snippet_thumbnail['high']['url'],
-        standard_thumbnail=into_snippet_thumbnail.get('standard', {}).get('url'),
+        standard_thumbnail=into_snippet_thumbnail.get(
+            'standard', {}).get('url'),
         max_thumbnail=into_snippet_thumbnail.get('maxres', {}).get('url'),
-        author=get_author_of_video(channel_id)
+        author=get_author_of_video(channel_id),
+        likes_count=likes_count,
+        dislikes_count=dislikes_count,
+        view_count=view_count,
+        published_at=published_at
     )

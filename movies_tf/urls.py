@@ -13,15 +13,23 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.contrib import admin
-from core.views import IndexView, VideoInfoView, PublishView
+from core.views import IndexView, VideoInfoView, PublishView, VideoView
 from core.models import Category
+from django.conf import settings
 
-urlpatterns = [
+urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', IndexView.as_view(), name='index'),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^publish/', PublishView.as_view(), name='publish'),
     url(r'^ajax_publish/', VideoInfoView.as_view(), name='video_info'),
-]
+    url(r'^videos/', VideoView.as_view(), name='videos'),
+)
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )

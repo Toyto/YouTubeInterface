@@ -18,6 +18,7 @@ $(document).ready(function(){
           var description = json['video_info']['description'];
           var video_id = json['video_info']['video_id'];
           var avatar = json['video_info']['avatar'];
+
           $.each(description.split('\n'), function(i, line) {
             $('#description').append($('<p/>', {html: line}));
           });
@@ -37,3 +38,4 @@ $(document).ready(function(){
       });
   });
 });
+

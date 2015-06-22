@@ -1,0 +1,44 @@
+{% load core %}
+
+<div class="category-block">
+  <div class="ui grid">
+    <div class="sixteen wide column">
+      <h2>{{ category.name }} videos</h2>
+    </div>
+    <div class="sixteen wide column">
+      <div class="ui four cards">
+        {% for video in videos %}
+        <div class="card">
+          <a class="image">
+            <img src="{{ video.thumbnail }}">
+          </a>
+          <div class="content">
+            <a class="header" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
+                {{ video.name }}
+            </a>
+            <div class="meta">
+              <span class="">{{ video.views_count }} views</span>
+              <span class="date right floated">{{ video.publish_at|short_timesince }} ago</span>
+            </div>
+            <div class="meta">
+              <span class="left floated">Rating</span>
+              <div class="ui star rating right floated" data-rating="{{ video.rating }}"></div>
+            </div>
+          </div>
+          <div class="extra content">
+            <img class="ui avatar image" style="float:left" src="{{ video.author.avatar_url }}">
+            <a style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display:block; padding: 0.5em">{{ video.author.name }}</a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="sixteen wide centered row">
+      {% if has_next %}
+        <button class="large ui button show-more-btn" data-category-id="{{ category.id }}" data-video-count="{{ videos|length }}">
+          Show more...
+        </button>
+      {% endif %}
+    </div>
+  </div>
+</div>

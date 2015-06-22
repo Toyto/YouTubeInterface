@@ -25,6 +25,8 @@ SECRET_KEY = '^4ck9)$n$fe)=s+3qza7j4q*do6$h^47r2_v2l_4cbm2#78#bs'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DEBUG_TOOLBAR_PATCH_SETTINGS = True
+
 ALLOWED_HOSTS = []
 
 
@@ -41,9 +43,11 @@ INSTALLED_APPS = (
     'widget_tweaks',
     'core',
     'social.apps.django_app.default',
+    'debug_toolbar',
 )
 
 MIDDLEWARE_CLASSES = (
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -99,7 +103,6 @@ STATICFILES_FINDERS = (
     'djangobower.finders.BowerFinder',
 )
 
-
 BOWER_COMPONENTS_ROOT = os.path.join(BASE_DIR, 'components')
 
 BOWER_INSTALLED_APPS = (
@@ -108,11 +111,6 @@ BOWER_INSTALLED_APPS = (
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'static_root')
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-
-)
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '117566578511-erqcjvienkcpbgvttd4e8el2s1f5i7ss.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '5vYnNRuHwo6AmpT9z5PJ4FwH'
