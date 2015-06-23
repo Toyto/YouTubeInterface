@@ -1,17 +1,21 @@
 {% load core %}
-
 <div class="category-block">
   <div class="ui grid">
     <div class="sixteen wide column">
       <h2>{{ category.name }} videos</h2>
     </div>
     <div class="sixteen wide column">
-      <div class="ui four cards">
+      <div class="ui four special cards">
         {% for video in videos %}
         <div class="card">
-          <a class="image">
+          <div class="dimmable image" id="{{ video.youtube_id }}">
+            <div class="ui dimmer">
+              <div class="content">
+                <div class="center"></div>
+              </div>
+            </div>
             <img src="{{ video.thumbnail }}">
-          </a>
+          </div>
           <div class="content">
             <a class="header" style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">
                 {{ video.name }}
@@ -28,6 +32,15 @@
           <div class="extra content">
             <img class="ui avatar image" style="float:left" src="{{ video.author.avatar_url }}">
             <a style="text-overflow: ellipsis; white-space: nowrap; overflow: hidden; display:block; padding: 0.5em">{{ video.author.name }}</a>
+          </div>
+        </div>
+        <div class="ui modal" id="modal{{ video.youtube_id }}">
+          <i class="close icon"></i>
+          <div class="header">
+            {{ video.name }}
+          </div>
+          <div class="content">
+            <div id="ytplayer_for{{ video.youtube_id }}"></div>
           </div>
         </div>
         {% endfor %}
