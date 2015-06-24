@@ -33,7 +33,7 @@ $(document).ready(function(){
           $('#step-select-categories').removeClass('disabled').addClass('active');
           $('html, body').animate({
             scrollTop: $("#video-block").offset().top
-          }, 2000);
+          }, 100);
         }
       });
   });
