@@ -1,8 +1,14 @@
 $(document).ready(function(){
-  $('.special.cards .image').dimmer({
-    on: 'hover'
-    });
+  function encodeQueryData(data) {
+     var ret = [];
+     for (var d in data)
+        ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
+     return '?' + ret.join("&");
+  }
+
+  $('.special.cards .image').dimmer({on: 'hover'});
   $('.rating').rating('disable');
+
   $("body").on("click", ".show-more-btn", function(event){
       var button = $(event.target);
       var category_id = button.attr("data-category-id");
@@ -16,22 +22,28 @@ $(document).ready(function(){
           var container = button.closest('.category-block');
           var parent = container.parent();
           container.replaceWith(data);
-          $(parent).find('.rating').rating('disable');
-          $(parent).find('.special.cards .image').dimmer({
-            on: 'hover'
-            });
+          parent.find('.rating').rating('disable');
+          parent.find('.special.cards .image').dimmer({on: 'hover'});
         }
       });
   });
-  $("body").on("click", ".card .dimmable.image", function(event){
-    var video_id = $(this).attr("id");
-    $('#ytplayer_for'+video_id).replaceWith(
-              "<iframe id='ytplayer' type='text/html' width='100%' height='500px' src='http://www.youtube.com/embed/"+ video_id + "?autoplay=1&enablejsapi=1&vq=hd720' frameborder='0'></iframe>"
-          );
-    $("#modal"+video_id).modal("setting", {
-        onHidden: function () {
-          $('.modal.transition').remove();
-        }
+
+  $("body").on("click", ".card .dimmable.image", function(){
+    var video_id = $(this).attr("data-video-id");
+    var oembed_url = (
+      'http://www.youtube.com/embed/' +
+      video_id +
+      encodeQueryData({
+        autoplay: 1,
+        enablejsapi: 1,
+        hq: 1,
+      })
+    )
+    $('#modal' + video_id + ' iframe').attr('src', oembed_url);
+    $("#modal" + video_id).modal("setting", {
+      onHidden: function () {
+        $('.modal.transition').remove();
+      }
     }).modal("show");
   });
 });

@@ -8,10 +8,13 @@
       <div class="ui four special cards">
         {% for video in videos %}
         <div class="card">
-          <div class="dimmable image" id="{{ video.youtube_id }}">
+          <div class="dimmable image" data-video-id="{{ video.youtube_id }}">
             <div class="ui dimmer">
               <div class="content">
-                <div class="center"></div>
+                <div class="center" style="font-size: 2em">
+                  <i class="video play icon"></i>
+                  <span>Watch</span>
+                </div>
               </div>
             </div>
             <img src="{{ video.thumbnail }}">
@@ -40,7 +43,11 @@
             {{ video.name }}
           </div>
           <div class="content">
-            <div id="ytplayer_for{{ video.youtube_id }}"></div>
+            <div class="ui video active">
+              <div class="embed">
+                <iframe width="100%" height="100%" frameborder="0"></iframe>
+              </div>
+            </div>
           </div>
         </div>
         {% endfor %}
