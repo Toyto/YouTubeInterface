@@ -180,7 +180,7 @@ def get_video_rating(likes_count, dislikes_count):
         return 4
 
 
-def get_category_videos(category, videos_per_page=4):
+def get_category_videos(category, videos_per_page=8):
     videos = Video.objects.filter(categories=category)
     return {
         'category': category,
