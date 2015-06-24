@@ -42,7 +42,7 @@ $(document).ready(function(){
     $('#modal' + video_id + ' iframe').attr('src', oembed_url);
     $("#modal" + video_id).modal("setting", {
       onHidden: function () {
-        $('.modal.transition').remove();
+        $(this).find('iframe').attr('src', '');
       }
     }).modal("show");
   });
