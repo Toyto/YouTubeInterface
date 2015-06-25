@@ -9,7 +9,11 @@
             videos : "{% url 'videos' %}",
         }
     </script>
+{% endblock %}
 
+{% block styles %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'core/core.css' %}">
 {% endblock %}
 
 {% block content %}

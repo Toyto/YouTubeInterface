@@ -3,25 +3,26 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
-
-        <div class="ui inverted menu">
-          <a class="active item" href="{% url 'index' %}">
-            <i class="home icon"></i> Home
+      <div class="ui inverted menu">
+        <a class="active item" href="{% url 'index' %}">
+          <i class="home icon"></i> Home
+        </a>
+        {% if request.user.is_anonymous %}
+        <a class="item" method="post" href="{% url 'social:begin' backend='google-oauth2' %}">
+          <i class="user icon"></i> Login
+        </a>
+        {% endif %}
+        <div class="right menu">
+          <a class="item">
+              {% if user.is_authenticated %}
+                You are authenticated as {{ request.user.get_full_name }}
+              {% endif %}
           </a>
-          {% if request.user.is_anonymous %}
-          <a class="item" method="post" href="{% url 'social:begin' backend='google-oauth2' %}">
-            <i class="user icon"></i> Login
-          </a>
-          {% endif %}
-          <div class="right menu">
-            <a class="item">
-                {% if user.is_authenticated %}
-                  You are authenticated as {{ request.user.get_full_name }}
-                {% endif %}
-            </a>
-          </div>
         </div>
+      </div>
+      {% block styles %}
+        <link href="{% static 'semantic-ui/dist/semantic.css' %}" rel="stylesheet">
+      {% endblock %}
     </head>
     <body>
       <div class="ui page grid">
