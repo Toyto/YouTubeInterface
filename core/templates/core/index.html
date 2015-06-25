@@ -23,13 +23,16 @@
           Publish video
       </div>
   </a>
-  <div class="ui divider"></div>
 </div>
 
-{% for category_info in categories %}
-  <div class="sixteen wide column">
-    {% include 'core/videos.html' with category=category_info.category videos=category_info.videos has_next=category_info.has_next %}
+<div class="sixteen wide column">
+  <div class="ui segment">
+    {% for category_info in categories %}
+      <div class="ui vertical segment">
+        {% include 'core/videos.html' with category=category_info.category videos=category_info.videos has_next=category_info.has_next %}
+      </div>
+    {% endfor %}
   </div>
-{% endfor %}
+</div>
 
 {% endblock %}

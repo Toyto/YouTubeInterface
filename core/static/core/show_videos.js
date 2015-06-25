@@ -13,6 +13,7 @@ $(document).ready(function(){
       var button = $(event.target);
       var category_id = button.attr("data-category-id");
       var video_count = parseInt(button.attr("data-video-count"));
+      $(event.target).closest('.segment').addClass('loading')
       $.ajax({
         type: "GET",
         url: _URLS.videos,
@@ -24,6 +25,7 @@ $(document).ready(function(){
           container.replaceWith(data);
           parent.find('.rating').rating('disable');
           parent.find('.special.cards .image').dimmer({on: 'hover'});
+          parent.closest('.segment').removeClass('loading');
         }
       });
   });

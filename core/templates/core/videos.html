@@ -53,12 +53,12 @@
         {% endfor %}
       </div>
     </div>
+    {% if has_next %}
     <div class="sixteen wide centered row">
-      {% if has_next %}
         <button class="large ui button show-more-btn" data-category-id="{{ category.id }}" data-video-count="{{ videos|length }}">
           Show more...
         </button>
-      {% endif %}
     </div>
+    {% endif %}
   </div>
 </div>
