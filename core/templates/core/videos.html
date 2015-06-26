@@ -1,4 +1,5 @@
 {% load core %}
+<!DOCTYPE html>
 <div class="category-block">
   <div class="ui grid">
     <div class="sixteen wide column">
@@ -7,7 +8,7 @@
     <div class="sixteen wide column">
       <div class="ui four special cards">
         {% for video in videos %}
-        <div class="card">
+        <div class="card" data-video-rating="{{ video.rating }}">
           <div class="dimmable image" data-video-id="{{ video.youtube_id }}">
             <div class="ui dimmer">
               <div class="content">
