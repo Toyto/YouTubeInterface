@@ -181,7 +181,7 @@ def get_video_rating(likes_count, dislikes_count):
 
 
 def get_category_videos(category, videos_per_page=8):
-    videos = Video.objects.filter(categories=category)
+    videos = Video.objects.filter(categories=category).order_by('-publish_at')
     return {
         'category': category,
         'videos': list(videos[0:videos_per_page]),
